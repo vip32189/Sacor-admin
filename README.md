@@ -4,19 +4,20 @@ Panel estático en español para administrar presentación, servicios, precios, 
 
 ## Activar GitHub Pages
 
-Este repositorio estaba vacío, por eso GitHub no ofrecía `main` como rama de publicación. Ahora que contiene estos archivos en la raíz y en la rama `main`, ve a **Settings → Pages → Build and deployment**, elige **Deploy from a branch**, selecciona `main` y `/(root)`, y pulsa **Save**.
+Este repositorio contiene el panel en la rama `main`, raíz del repositorio. En **Settings → Pages → Build and deployment**, elige **Deploy from a branch**, selecciona `main` y `/(root)`, y pulsa **Save**.
 
-La URL prevista es `https://vip32189.github.io/Sacor-admin/` una vez que termine el despliegue.
+URL: `https://vip32189.github.io/Sacor-admin/` una vez que termine el despliegue.
 
-## Uso
+## Uso del panel y publicación directa
 
-1. Abre el panel desde la URL de GitHub Pages y crea un código local de al menos 12 caracteres.
-2. Edita presentación, servicios y disponibilidad. La información se guarda en el almacenamiento local de ese navegador.
-3. Descarga `config.json` desde el panel.
-4. Reemplaza `data/config.json` en `vip32189/Sancor` por el archivo descargado y publica el cambio.
+1. Abre el panel y configura el código local (barrera visual únicamente).
+2. Edita presentación, servicios y disponibilidad. Se guardan en el almacenamiento local de ese navegador.
+3. Para publicar automáticamente, crea en GitHub un **fine-grained personal access token** con expiración, acceso únicamente al repositorio `vip32189/Sancor` y permiso de repositorio **Contents: Read and write**. No uses un token clásico ni habilites permisos adicionales.
+4. Pega el token en el campo del panel y elige **Publicar configuración**. El navegador lo usa para leer el SHA actual y actualizar `data/config.json` mediante GitHub Contents API. El campo se limpia al finalizar; el token no se guarda en `localStorage` ni en el repositorio.
+5. También puedes descargar `config.json` y actualizarlo manualmente. Las imágenes deben tener una URL pública HTTPS.
 
-Las imágenes deben tener una URL pública HTTPS; no se cargan archivos de imagen desde el panel.
+## Seguridad importante
 
-## Limitaciones de seguridad y operación
+Este método requiere escribir el token en el navegador; durante el uso, el token está disponible para la página y se transmite a `api.github.com`. Úsalo solo desde el dominio oficial de GitHub Pages y un dispositivo confiable. No lo pegues en chats ni lo guardes en los archivos del repositorio. Configura expiración corta y revoca el token inmediatamente si sospechas que se expuso. Todo token con acceso de escritura puede modificar contenido del repositorio dentro de su alcance.
 
-GitHub Pages no proporciona autenticación ni base de datos. El código local, cuyo hash se guarda en `localStorage`, es solo una barrera de interfaz; no protege el sitio de quienes inspeccionen o alteren el navegador. No guardes información sensible. No hay sincronización entre dispositivos, almacenamiento de reservas ni bloqueo de horarios. El cliente envía la solicitud por WhatsApp y el negocio debe confirmar disponibilidad. Los cambios se hacen públicos solo después de actualizar manualmente el archivo de configuración del repositorio Sancor.
+El código local no autentica al administrador de manera segura. GitHub Pages no ofrece backend, base de datos, sincronización entre navegadores ni bloqueo de horarios. Las reservas se envían por WhatsApp y requieren confirmación manual; pueden ocurrir solicitudes simultáneas para la misma hora.
